@@ -5,22 +5,39 @@
   <meta charset="utf-8">
   <title>Daily Journal</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
   <link rel="stylesheet" href="/css/styles.css">
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <p class="navbar-brand">DAILY JOURNAL</p>
-      </div>
-      <ul class="nav navbar-nav navbar-right">
-        <!-- 6 -->
-        <li id="home"><a href="/">HOME</a></li>
-        <li id="about"><a href="/about">ABOUT US</a></li>
-        <li id="contact"><a href="/contact">CONTACT US</a></li>
-        <li id="compose"><a href="/compose">Post New</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <body>
+  <body data-bs-theme="dark">
+
+    <section id="title">
+
+      <nav class="navbar navbar-expand-xl" style="background-color: #606C5D;">
+        <div class="container">
+          <a class="navbar-brand" href="/">DAILY JOURNAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+            </span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav me-auto">
+              <!-- 6 -->
+              <li class="nav-item" id="home"><a class="nav-link active" href="/">HOME</a></li>
+              <li class="nav-item" id="about"><a class="nav-link active" href="/about">ABOUT US</a></li>
+              <li class="nav-item" id="contact"><a class="nav-link active" href="/contact">CONTACT US</a></li>
+              <li class="nav-item" id="compose"><a class="nav-link active"  href="/compose">POST NEW</a></li>
+            </ul>
+            <form class="d-flex" role="search" action="/search" method="post">
+              <input class="form-control me-2" name="searchinput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+              <button class="btn btn-outline-secondary searchButton" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+    </section>
+
     <div class="container">

@@ -21,10 +21,12 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-const blogSchema = {
+const blogSchema = new mongoose.Schema({
     title : String,
     content : String
-};
+});
+
+blogSchema.index({title:"text" , content:"text"});
 
 const Blog = mongoose.model("Blog",blogSchema);
 
@@ -67,7 +69,6 @@ app.post("/compose",function(req,res){
         content : post.content
     });
     blog.save();
-    // posts.push(post);
     res.redirect("/");
 });
 
@@ -82,10 +83,22 @@ app.get("/posts/:postID",function(req,res){
             console.log(err);
         });
 
-    // for(let i=0;i<posts.length;i++){
-    //     if(_.lowerCase(posts[i].title) == requestedTitle)
-    //        res.render("post",{postTitle : posts[i].title , postBody : posts[i].content});
-    // }
+});
+
+app.post("/search",function(req,res){
+    //take input entered by user in search input 
+    //perform text search functionality
+    //will have array of it
+    //render home ejs file by passing array to it
+
+    const searchInput = req.body.searchinput;
+    Blog.find({$text:{$search: searchInput}},{score:{ $meta: "textScore" }}).sort( { score: { $meta: "textScore" } } )
+        .then(function(bloglist){
+            res.render("search",{posts:bloglist});
+        })
+        .catch(function(err){
+            console.log(err);
+        });
 });
 
 
