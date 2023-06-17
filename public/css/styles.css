@@ -33,17 +33,38 @@ ul{
     border-color: azure;
     color: azure;
 }
+
+#body{
+    min-height: calc(100vh - 6.7rem - 6.7rem);
+}
+.card:hover{
+    box-shadow: 0 0 50px azure;
+}
 .footer-padding {
-	padding-bottom: 60px;
+	padding-bottom: 20px;
+}
+.img-fluid{
+    height: 100%;
+}
+.card{
+    width: 100%;
+    margin-bottom: 40px;
+    box-shadow: 1 1 200px rgba(0, 0, 0, 0.2);
 }
 
+.postimg{
+    margin-bottom: 30px;
+}
+.postimg img{
+    height: 25rem;
+    border-radius: 20px;
+}
 .footer {
-	position: absolute;
+    padding-top: 2px;
     padding-bottom: 2px;
 	text-align: center;
-	bottom: 0;
 	width: 95%;
-	height: 50px;
+    margin-top: 40px;
     border-radius: 30px;
     margin-left: 35px;
 	background-color: #606C5D;
@@ -53,7 +74,7 @@ ul{
 .footer p {
 	margin-top: 15px;
 	font-size: 12px;
-  color: #fff;
+    color: #fff;
 }
 
 .btn-circle {
@@ -69,4 +90,9 @@ ul{
 
 .composebtn{
     margin-top: 15px;
+}
+
+.bi{
+    font-size: 40px;
+    margin-right: 20px;
 }

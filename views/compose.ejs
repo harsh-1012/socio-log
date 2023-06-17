@@ -1,14 +1,18 @@
 <%- include("partials/header"); -%>
 
 <h1>Compose</h1>
-<form action="/compose" method="post">
+<form action="/compose" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label>Tile</label>
-        <input class="form-control" type="text" name="postTitle" autocomplete="off">
+        <label for="validationDefault01" class="form-label">Tile</label>
+        <input class="form-control" type="text" name="postTitle" id="validationDefault01" autocomplete="off" required>
     </div>
     <div class="form-group">
-        <label>Post</label>
-        <textarea class="form-control" name="postBody" cols="30" rows="5" autocomplete="off"></textarea>
+        <label for="validationDefault02" class="form-label">Post</label>
+        <textarea class="form-control" name="postBody" cols="30" rows="5" id="validationDefault02" autocomplete="off" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="validationDefault03" class="form-label">Upload Image</label>
+        <input class="form-control" type="file" multiple accept="image/png,image/jpg,image/jpeg" name="image" id="validationDefault03" required>
     </div>
     <button type="submit" class="btn searchButton btn-outline-info composebtn">Publish</button>
 </form>
