@@ -6,22 +6,55 @@
 <%for(let i=posts.length-1;i >= 0 ; i--){ %>
 
 
-    <div class="card">
+    <div class="card cardHome">
         <div class="row">
           <div class="col-lg-4">
             <img src="/images/<%=posts[i].imageName%>" class="img-fluid" alt="...">
           </div>
           <div class="col-lg-8">
             <div class="card-body">
-              <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><svg xmlns="http://www.w3.org/2000/svg" height="0.4em" viewBox="0 0 448 512"><style>svg{fill:#c1c4c7}</style><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a></h1>
+              <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#dddddd;position: relative;top: 14px;"></i></a></h1>
               <hr>
-              <% if(posts[i].content.length > 200){ %>
-                <p><%= posts[i].content.substring(0,200) + " ..."%>
-                    <a href="posts/<%= posts[i]._id %>">Read More</a>
+              <% if(posts[i].content.length > 150){ %>
+                <p><%= posts[i].content.substring(0,150) + " ..."%>
+                    <a href="posts/<%= posts[i]._id %>" style="color: orange;">Read More</a>
                 </p>
                <% }else{  %>
                   <p><%= posts[i].content %></p>
                <%  } %>
+            </div>
+            <a href="/like/<%=posts[i]._id%>" style="text-decoration: none;">
+              <i class="bi bi-hand-thumbs-up thumbup"></i>
+            </a>
+            <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+            <div class="dropdown">
+              <i class="bi bi-chat thumbup" data-bs-toggle="dropdown"></i>
+                <div class="dropdown-menu" style="width: 400px !important;">
+                    <form action="/comment" method="post" class="commentForm dropdown-item">
+                      <input name="Usercomment" class="form-control cardComment" placeholder="Add Comment" autocomplete="off">
+                      <input name="id" value="<%=posts[i]._id%>" type="hidden">
+                      <button type="submit" class="btn searchButton btn-outline-info composebtn commentBtn">Add</button>
+                    </form>
+                    <!-- print 2-3 top comments -->
+                     <ul class="dropdown-item">
+
+                  <%    posts[i].comments.slice().reverse().forEach(function(data,index){ %>
+
+                  <%        if(index > 1) return;  %>
+
+                  <%        if(data.comment.length > 40){  %>
+                              <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
+                                <a href="posts/<%= posts[i]._id %>" style="color:orange">Read</a>
+                              </li>
+                   <%       }else{   %>
+                              <li class="dropdown-item"><%=data.comment%></li>
+                   <%       }   %>
+                   
+                   <%   });  %>
+
+                     <a href="posts/<%= posts[i]._id %>" class="dropdown-item" style="text-decoration: underline;color: orange;">View All</a>
+                      </ul>
+                </div>
             </div>
           </div>
         </div>

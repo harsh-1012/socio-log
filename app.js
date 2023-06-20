@@ -20,6 +20,7 @@ const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pelle
 const app = express();
 
 app.set('view engine', 'ejs');
+let count = 0;
 
 app.use(fileUpload({
     limits: {
@@ -33,13 +34,14 @@ app.use(express.static("public"));
 const blogSchema = new mongoose.Schema({
     title : String,
     content : String,
-    imageName:String
+    imageName:String,
+    likeCount : Number,
+    comments : [{comment:String}]
 });
 
 blogSchema.index({title:"text" , content:"text"});
 
 const Blog = mongoose.model("Blog",blogSchema);
-
 // var posts=[];
 
 app.get("/",function(req,res){
@@ -79,6 +81,15 @@ app.get("/delete/:deleteID",function(req,res){
     res.redirect("/");
 });
 
+app.get("/like/:docID",function(req,res){
+    const reqID = req.params.docID;
+    Blog.updateOne({_id:reqID},{$inc:{likeCount:1}})
+        .catch(function(err){
+            console.log(err);
+        })
+    res.redirect("/");
+});
+
 app.post("/compose",function(req,res){
     const {image} = req.files;
     
@@ -103,7 +114,7 @@ app.get("/posts/:postID",function(req,res){
     
     Blog.findOne({_id:requestedID})
         .then(function(post){
-            res.render("post",{postTitle : post.title , postBody : post.content , postImage : post.imageName});
+            res.render("post",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments,id:requestedID});
         })
         .catch(function(err){
             console.log(err);
@@ -127,6 +138,28 @@ app.post("/search",function(req,res){
         });
 });
 
+app.post("/comment",function(req,res){
+    const {Usercomment,id} = req.body;
+
+    // const data = new Comment({comment:Usercomment});
+    // data.save();
+
+    Blog.updateOne({_id:id},{$push:{comments:{comment:Usercomment}}})
+        .catch(function(err){
+            console.log(err);
+        });
+
+    res.redirect("/posts/"+id);
+});
+
+app.get("/posts/deleteComment/:postID/:commentID",function(req,res){
+    
+    Blog.updateOne({_id:req.params.postID},{$pull:{comments:{_id:req.params.commentID}}})
+        .catch(function(err){
+            console.log(err);
+        });
+    res.redirect("/posts/"+req.params.postID);
+});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
