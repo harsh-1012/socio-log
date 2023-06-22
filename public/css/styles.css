@@ -66,6 +66,9 @@ ul{
     color: #e3e3e3;
     font-size: 25px;
 }
+.likedthumb{
+    color: rgb(0, 183, 255);
+}
 
 .cardComment{
     width: 70%;

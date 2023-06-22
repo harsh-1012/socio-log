@@ -1,0 +1,22 @@
+<%- include("partials/headerBeforeAuth"); %>
+
+<div class="container" style="width: 40%;text-align: center;">
+    <h1>LOGIN</h1>
+    <form action="/login" method="post">
+        <div class="form-group" style="margin-top: 50px;">
+            <input type="text" class="form-control" placeholder="Name" name="name" autocomplete="off" required>
+        </div>
+        <div class="form-group" style="margin-top: 25px;">
+            <input type="text" id="email" placeholder="Email" class="form-control" name="username" autocomplete="off" required>
+        </div>
+        <div class="form-group" style="margin-top: 25px;">
+            <input type="text" id="password" placeholder="Password" class="form-control" name="password" autocomplete="off" required>
+        </div>
+        <button type="submit" class="btn searchButton btn-outline-info composebtn">Login</button>
+    </form>
+    <div style="margin-top: 40px;">
+        <a href="/register" style="color: orange;">Register</a>
+    </div>
+</div>
+
+<%- include("partials/footer"); %>

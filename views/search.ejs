@@ -8,7 +8,14 @@
       </div>
       <div class="col-lg-8">
         <div class="card-body">
-          <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#dddddd;position: relative;top: 14px;"></i></a></h1>
+          
+      <!-- if current user matches with the user id stored with blog means display del -->
+  <%      if(String(userID) === posts[i].userid){   %>
+             <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#dddddd;position: relative;top: 14px;"></i></a></h1>
+  <%      }else{   %>
+              <h1><%= posts[i].title %></h1>
+  <%      }   %>
+
           <hr>
           <% if(posts[i].content.length > 150){ %>
             <p><%= posts[i].content.substring(0,150) + " ..."%>
@@ -18,10 +25,27 @@
               <p><%= posts[i].content %></p>
            <%  } %>
         </div>
-        <a href="/like/<%=posts[i]._id%>" style="text-decoration: none;">
-          <i class="bi bi-hand-thumbs-up thumbup"></i>
-        </a>
-        <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+
+<!-- Like displaying logic -->
+<%        let flag = 0;                          %>
+<%        for(let j=0;j<likedpost.length;j++){        %>
+<%          if(likedpost[j] === String(posts[i]._id)){         %>
+<%            flag = 1;                            %>
+<%            break;                                  %>
+<%          }                                         %>
+<%        }                                           %>
+<%        if(flag==1){                                   %>
+            <a style="text-decoration: none;">
+              <i class="bi bi-hand-thumbs-up thumbup likedthumb"></i>
+            </a>
+            <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+<%        }else{                                                            %>
+            <a href="/like/<%=posts[i]._id%>" style="text-decoration: none;">
+              <i class="bi bi-hand-thumbs-up thumbup"></i>
+            </a>
+            <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+<%        }                                                                 %>
+
         <div class="dropdown">
           <i class="bi bi-chat thumbup" data-bs-toggle="dropdown"></i>
             <div class="dropdown-menu" style="width: 400px !important;">

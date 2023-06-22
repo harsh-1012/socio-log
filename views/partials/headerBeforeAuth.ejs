@@ -18,7 +18,7 @@
 
       <nav class="navbar navbar-expand-xl" style="background-color: #606C5D;">
         <div class="container">
-          <a class="navbar-brand" href="/main">DAILY JOURNAL</a>
+          <a class="navbar-brand" href="/">DAILY JOURNAL</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
             </span>
@@ -26,17 +26,18 @@
           <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto">
               <!-- 6 -->
-              <li class="nav-item" id="home"><a class="nav-link active" href="/main">HOME</a></li>
-              <li class="nav-item" id="about"><a class="nav-link active" href="/about">ABOUT US</a></li>
-              <li class="nav-item" id="contact"><a class="nav-link active" href="/contact">CONTACT US</a></li>
-              <li class="nav-item" id="compose"><a class="nav-link active"  href="/compose">POST NEW</a></li>
+              <li class="nav-item" id="home"><a class="nav-link active" href="/">HOME</a></li>
+              <li class="nav-item" id="about"><a class="nav-link active" href="/aboutBeforeAuth">ABOUT US</a></li>
+              <li class="nav-item" id="contact"><a class="nav-link active" href="/contactBeforeAuth">CONTACT US</a></li>
+              <!-- <li class="nav-item" id="compose"><a class="nav-link active"  href="/compose">POST NEW</a></li> -->
             </ul>
-            <form class="d-flex" role="search" action="/search" method="post">
+            <form class="d-flex" role="search" action="/searchBeforeAuth" method="post">
               <input class="form-control me-2" name="searchinput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
               <button class="btn btn-outline-success searchButton" type="submit">Search</button>
             </form>
-            <form action="/logout" method="get" style="margin-left: 20px;">
-              <button class="btn btn-outline-warning searchButton" type="submit">LogOut</button>
+                <!-- login button taking to login page / Get request-->
+            <form class="d-flex" action="/login" method="get" style="margin-left:20px;">
+                <button class="btn btn-outline-warning searchButton" type="submit">Login</button>
             </form>
           </div>
         </div>

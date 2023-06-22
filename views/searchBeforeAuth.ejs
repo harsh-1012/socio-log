@@ -1,0 +1,59 @@
+<%- include("partials/headerBeforeAuth.ejs") %>
+
+<% for(let i=0;i<posts.length;i++){ %>
+  <div class="card cardHome">
+    <div class="row">
+      <div class="col-lg-4">
+        <img src="/images/<%=posts[i].imageName%>" class="img-fluid" alt="...">
+      </div>
+      <div class="col-lg-8">
+        <div class="card-body">
+          <h1><%= posts[i].title %></h1>
+          <hr>
+          <% if(posts[i].content.length > 150){ %>
+            <p><%= posts[i].content.substring(0,150) + " ..."%>
+                <a href="posts/BeforeAuth/<%= posts[i]._id %>" style="color: orange;">Read More</a>
+            </p>
+           <% }else{  %>
+              <p><%= posts[i].content %></p>
+           <%  } %>
+        </div>
+        <a href="/login" style="text-decoration: none;">
+          <i class="bi bi-hand-thumbs-up thumbup"></i>
+        </a>
+        <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+        <div class="dropdown">
+          <i class="bi bi-chat thumbup" data-bs-toggle="dropdown"></i>
+            <div class="dropdown-menu" style="width: 400px !important;">
+                <form action="/login" method="get" class="commentForm dropdown-item">
+                  <input name="Usercomment" class="form-control cardComment" placeholder="Add Comment" autocomplete="off">
+                  <input name="id" value="<%=posts[i]._id%>" type="hidden">
+                  <button type="submit" class="btn searchButton btn-outline-info composebtn commentBtn">Add</button>
+                </form>
+                <!-- print 2-3 top comments -->
+                 <ul class="dropdown-item">
+
+              <%    posts[i].comments.slice().reverse().forEach(function(data,index){ %>
+
+              <%        if(index > 1) return;  %>
+
+              <%        if(data.comment.length > 40){  %>
+                          <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
+                            <a href="posts/BeforeAuth/<%= posts[i]._id %>" style="color: orange;">Read</a>
+                          </li>
+               <%       }else{   %>
+                          <li class="dropdown-item"><%=data.comment%></li>
+               <%       }   %>
+               
+               <%   });  %>
+
+                 <a href="posts/BeforeAuth/<%= posts[i]._id %>" class="dropdown-item" style="text-decoration: underline;color: orange;">View All</a>
+                  </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<% } %>
+
+<%- include("partials/footer.ejs") %>
