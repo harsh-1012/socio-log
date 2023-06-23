@@ -31,14 +31,17 @@
               <li class="nav-item" id="contact"><a class="nav-link active" href="/contactBeforeAuth">CONTACT US</a></li>
               <!-- <li class="nav-item" id="compose"><a class="nav-link active"  href="/compose">POST NEW</a></li> -->
             </ul>
+
+            <div style="display: flex;">
             <form class="d-flex" role="search" action="/searchBeforeAuth" method="post">
               <input class="form-control me-2" name="searchinput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
               <button class="btn btn-outline-success searchButton" type="submit">Search</button>
             </form>
                 <!-- login button taking to login page / Get request-->
-            <form class="d-flex" action="/login" method="get" style="margin-left:20px;">
+              <form class="d-flex" action="/login" method="get" style="margin-left:20px;">
                 <button class="btn btn-outline-warning searchButton" type="submit">Login</button>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </nav>

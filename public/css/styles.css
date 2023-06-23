@@ -8,7 +8,7 @@
     padding-bottom: 15px;
     border: 0;
     margin-bottom: 50px;
-    margin-left: 35px;
+    margin-left: 2.4%;
     /* height: 70px; */
     width: 95%;
     border-radius: 30px;
@@ -32,6 +32,11 @@ ul{
 .searchButton{
     border-color: azure;
     color: azure;
+}
+.bi-person-square::before {
+    font-size: 36px;
+    margin-left: 9px;
+    content: "\f4de";
 }
 
 #body{
@@ -97,6 +102,7 @@ ul{
 .postimg img{
     height: 25rem;
     border-radius: 20px;
+    width: 65%;
 }
 .footer {
     padding-top: 2px;
@@ -105,7 +111,7 @@ ul{
 	width: 95%;
     margin-top: 40px;
     border-radius: 30px;
-    margin-left: 35px;
+    margin-left: 2.4%;
 	background-color: #606C5D;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

@@ -31,13 +31,17 @@
               <li class="nav-item" id="contact"><a class="nav-link active" href="/contact">CONTACT US</a></li>
               <li class="nav-item" id="compose"><a class="nav-link active"  href="/compose">POST NEW</a></li>
             </ul>
-            <form class="d-flex" role="search" action="/search" method="post">
-              <input class="form-control me-2" name="searchinput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
-              <button class="btn btn-outline-success searchButton" type="submit">Search</button>
-            </form>
-            <form action="/logout" method="get" style="margin-left: 20px;">
-              <button class="btn btn-outline-warning searchButton" type="submit">LogOut</button>
-            </form>
+
+            <div style="display: flex;">
+              <form class="d-flex" role="search" action="/search" method="post">
+                <input class="form-control me-2" name="searchinput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+                <button class="btn btn-outline-success searchButton" type="submit">Search</button>
+              </form>
+              <form class="d-flex" action="/logout" method="get" style="margin-left: 20px;">
+                <button class="btn btn-outline-warning searchButton" type="submit">LogOut</button>
+                <a href="userProfile"><i class="bi bi-person-square" style="color: rgb(255, 255, 255);margin-left:5px;"></i></a>
+              </form>
+            </div>
           </div>
         </div>
       </nav>

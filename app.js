@@ -187,6 +187,21 @@ app.get("/like/:docID",function(req,res){
     res.redirect("/main");
 });
 
+app.get("/userProfile",function(req,res){
+    if(req.isAuthenticated()){
+        Blog.find({userid:String(req.user._id)})
+            .then(function(blogList){
+
+                User.findById({_id:req.user._id})
+                    .then(function(user){
+                        res.render("profile",{posts:blogList,name:user.name,likedpost:user.likedpost});
+                    });
+            });
+    }else{
+        res.redirect("/login");
+    }
+});
+
 app.post("/register",function(req,res){
     const user = new User({
         username:req.body.username,
