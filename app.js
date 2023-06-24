@@ -32,16 +32,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.use(session({
-    secret:"Our little secret",
+    secret:""+process.env.sessionPass,
     resave:false,
     saveUninitialized:true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//mongoose.connect("mongodb+srv://admin-harsh:"+ process.env.mongoPass +"@cluster0.xoqf80d.mongodb.net/blogDB");
+mongoose.connect(""+process.env.mongoUrl);
 
-mongoose.connect("mongodb://0.0.0.0:27017/userDB");
+// mongoose.connect("mongodb://0.0.0.0:27017/userDB");
 
 const commentSchema = new mongoose.Schema({
     comment:String,
