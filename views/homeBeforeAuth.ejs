@@ -21,6 +21,8 @@
                     <p><%= posts[i].content %></p>
                 <%  } %>
               </div>
+
+
               <a href="/login" style="text-decoration: none;">
                 <i class="bi bi-hand-thumbs-up thumbup"></i>
               </a>
@@ -39,14 +41,22 @@
                     <%    posts[i].comments.slice().reverse().forEach(function(data,index){ %>
 
                     <%        if(index > 1) return;  %>
+                        
+                            <div class="card" style="margin-bottom: 10px;">
+                              <div class="card-body">
 
-                    <%        if(data.comment.length > 40){  %>
-                                <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
-                                  <a href="posts/BeforeAuth/<%= posts[i]._id %>" style="color:orange">Read</a>
-                                </li>
-                    <%       }else{   %>
-                                <li class="dropdown-item"><%=data.comment%></li>
-                    <%       }   %>
+                                <p style="margin-bottom:0;"><i class="bi bi-person"></i><%=data.name%></p>
+                                <%        if(data.comment.length > 40){  %>
+                                            <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
+                                              <a href="posts/BeforeAuth/<%= posts[i]._id %>" style="color:orange">Read</a>
+                                            </li>
+                                <%       }else{   %>
+                                            <li class="dropdown-item"><%=data.comment%></li>
+                                <%       }   %>
+
+                              </div>
+                            </div>
+                    
                     
                     <%   });  %>
 

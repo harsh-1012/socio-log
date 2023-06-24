@@ -19,10 +19,12 @@
               <p><%= posts[i].content %></p>
            <%  } %>
         </div>
+
         <a href="/login" style="text-decoration: none;">
           <i class="bi bi-hand-thumbs-up thumbup"></i>
         </a>
         <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+        
         <div class="dropdown">
           <i class="bi bi-chat thumbup" data-bs-toggle="dropdown"></i>
             <div class="dropdown-menu" style="width: 400px !important;">

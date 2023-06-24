@@ -158,7 +158,8 @@ app.get("/compose",function(req,res){
 app.get("/delete/:deleteID",function(req,res){
     const reqDeleteID = req.params.deleteID;
 
-    Blog.findOneAndDelete({_id:reqDeleteID})
+    if(req.isAuthenticated()){
+        Blog.findOneAndDelete({_id:reqDeleteID})
         .then(function(blog){
             const pathtofile = __dirname+"/public/images/"+blog.imageName;
             fs.unlink(pathtofile,function(err){
@@ -170,12 +171,17 @@ app.get("/delete/:deleteID",function(req,res){
             console.log(err);
         });
     
-    res.redirect("/main");
+        res.redirect("/main");
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.get("/like/:docID",function(req,res){
     const reqID = req.params.docID;
-    Blog.updateOne({_id:reqID},{$inc:{likeCount:1}})
+
+    if(req.isAuthenticated()){
+        Blog.updateOne({_id:reqID},{$inc:{likeCount:1}})
         .then(function(){
             User.updateOne({_id:req.user._id},{$push:{likedpost:reqID}})
                 .catch(function(err){console.log(err);});
@@ -184,12 +190,15 @@ app.get("/like/:docID",function(req,res){
             console.log(err);
         });
 
-    res.redirect("/main");
+        res.redirect("/main");
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.get("/userProfile",function(req,res){
     if(req.isAuthenticated()){
-        Blog.find({userid:String(req.user._id)})
+        Blog.find({userid:(req.user._id).toString()})
             .then(function(blogList){
 
                 User.findById({_id:req.user._id})
@@ -240,41 +249,49 @@ app.post("/login",function(req,res){
 app.post("/compose",function(req,res){
     const {image} = req.files;
     
-    // If no image submitted, exit
-    if (!image) return res.sendStatus(400);
-    // if (/^image/.test(image.jpg)) console.log("error");
-    //moving image to images folder
-    image.mv(__dirname + "/public/images/" + image.name);
-    
-    const userID = req.user._id;
-    
-    User.findById({_id:userID})
-        .then(function(data){
+    if(req.isAuthenticated()){
+        // If no image submitted, exit
+        if (!image) return res.sendStatus(400);
+        // if (/^image/.test(image.jpg)) console.log("error");
+        //moving image to images folder
+        image.mv(__dirname + "/public/images/" + image.name);
+        
+        const userID = req.user._id;
+        
+        User.findById({_id:userID})
+            .then(function(data){
 
-            const post = {title : req.body.postTitle , content : req.body.postBody};
-            const blog = new Blog({
-                userid : userID,
-                name : data.name,
-                title : post.title,
-                content : post.content,
-                imageName : image.name
+                const post = {title : req.body.postTitle , content : req.body.postBody};
+                const blog = new Blog({
+                    userid : userID,
+                    name : data.name,
+                    title : post.title,
+                    content : post.content,
+                    imageName : image.name
+                });
+                blog.save();
             });
-            blog.save();
-        });
 
-    res.redirect("/main");
+        res.redirect("/main");
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.get("/posts/:postID",function(req,res){
     const requestedID = req.params.postID;
     
-    Blog.findOne({_id:requestedID})
+    if(req.isAuthenticated()){
+        Blog.findOne({_id:requestedID})
         .then(function(post){
             res.render("post",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments,id:requestedID,userID:req.user._id});
         })
         .catch(function(err){
             console.log(err);
         });
+    }else{
+        res.redirect("/login");
+    }
 
 });
 
@@ -296,18 +313,22 @@ app.post("/search",function(req,res){
     //will have array of it
     //render home ejs file by passing array to it
 
-    const searchInput = req.body.searchinput;
-    Blog.find({$text:{$search: searchInput}},{score:{ $meta: "textScore" }}).sort( { score: { $meta: "textScore" } } )
-        .then(function(bloglist){
+    if(req.isAuthenticated()){
+        const searchInput = req.body.searchinput;
+        Blog.find({$text:{$search: searchInput}},{score:{ $meta: "textScore" }}).sort( { score: { $meta: "textScore" } } )
+            .then(function(bloglist){
 
-            User.findById({_id:req.user._id})
-                .then(function(user){
-                    res.render("search",{posts:bloglist,userID:req.user._id,likedpost:user.likedpost});
-                });
-        })
-        .catch(function(err){
-            console.log(err);
-        });
+                User.findById({_id:req.user._id})
+                    .then(function(user){
+                        res.render("search",{posts:bloglist,userID:req.user._id,likedpost:user.likedpost});
+                    });
+            })
+            .catch(function(err){
+                console.log(err);
+            });
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.post("/searchBeforeAuth",function(req,res){
@@ -324,7 +345,8 @@ app.post("/searchBeforeAuth",function(req,res){
 app.post("/comment",function(req,res){
     const {Usercomment,id} = req.body;
 
-    User.findById({_id:req.user._id})
+    if(req.isAuthenticated()){
+        User.findById({_id:req.user._id})
         .then(function(ans){
             
             const data = new Comment({comment:Usercomment,userid:req.user._id,name:ans.name});
@@ -336,21 +358,28 @@ app.post("/comment",function(req,res){
                 }); 
         });
 
-    res.redirect("/posts/"+id);
+        res.redirect("/posts/"+id);
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.get("/posts/deleteComment/:postID/:commentID",function(req,res){
     
-    Comment.findByIdAndRemove({_id:req.params.commentID})
+    if(req.isAuthenticated()){
+        Comment.findByIdAndRemove({_id:req.params.commentID})
         .catch(function(err){
             console.log(err);
         });
 
-    Blog.updateOne({_id:req.params.postID},{$pull:{comments:{_id:req.params.commentID}}})
-        .catch(function(err){
-            console.log(err);
-        });
-    res.redirect("/posts/"+req.params.postID);
+        Blog.updateOne({_id:req.params.postID},{$pull:{comments:{_id:req.params.commentID}}})
+            .catch(function(err){
+                console.log(err);
+            });
+        res.redirect("/posts/"+req.params.postID);
+    }else{
+        res.redirect("/login");
+    }
 });
 
 app.listen(3000, function() {

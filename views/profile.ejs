@@ -2,51 +2,49 @@
 
     <h1 style="text-align: center;margin-bottom: 100px;"><%=name%></h1>
 
-    <%for(let i=posts.length-1;i >= 0 ; i--){ %>
+      <div class="row">
+        <%for(let i=posts.length-1;i >= 0 ; i--){ %>
 
-
-        <div class="card cardHome">
-            <div class="row">
-              <div class="col-lg-4">
-                <img src="/images/<%=posts[i].imageName%>" class="img-fluid" alt="...">
-              </div>
-              <div class="col-lg-8">
+            <div class="col col-md-6 col-lg-4 col-sm-12 col-12">
+              <div class="card profilecard">
+                <img width="150" height="300" src="/images/<%=posts[i].imageName%>" class="card-img-top" alt="...">
                 <div class="card-body">
                     
                   <!-- if current user matches with the user id stored with blog means display del -->
                   <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#dddddd;position: relative;top: 14px;"></i></a></h1>
-    
+
                   <hr>
                   <% if(posts[i].content.length > 150){ %>
                     <p><%= posts[i].content.substring(0,150) + " ..."%>
                         <a href="posts/<%= posts[i]._id %>" style="color: orange;">Read More</a>
                     </p>
-                   <% }else{  %>
+                    <% }else{  %>
                       <p><%= posts[i].content %></p>
-                   <%  } %>
-                </div>
-    
-                  <!-- Like displaying logic -->
-          <%        let flag = 0;                          %>
-          <%        for(let j=0;j<likedpost.length;j++){        %>
-          <%          if(likedpost[j] === String(posts[i]._id)){         %>
-          <%            flag = 1;                            %>
-          <%            break;                                  %>
-          <%          }                                         %>
-          <%        }                                           %>
-          <%        if(flag==1){                                   %>
-                      <a style="text-decoration: none;">
-                        <i class="bi bi-hand-thumbs-up thumbup likedthumb"></i>
-                      </a>
-                      <h1 class="cardLike"><%=posts[i].likeCount%></h1>
-          <%        }else{                                                            %>
-                      <a href="/like/<%=posts[i]._id%>" style="text-decoration: none;">
-                        <i class="bi bi-hand-thumbs-up thumbup"></i>
-                      </a>
-                      <h1 class="cardLike"><%=posts[i].likeCount%></h1>
-          <%        }                                                                 %>
-    
-    
+                    <%  } %>
+          
+                <!-- Like displaying logic -->
+                      
+
+        <%        let flag = 0;                          %>
+        <%        for(let j=0;j<likedpost.length;j++){        %>
+        <%          if(likedpost[j] === String(posts[i]._id)){         %>
+        <%            flag = 1;                            %>
+        <%            break;                                  %>
+        <%          }                                         %>
+        <%        }                                           %>
+        <%        if(flag==1){                                   %>
+                    <a style="text-decoration: none;">
+                      <i class="bi bi-hand-thumbs-up thumbup likedthumb"></i>
+                    </a>
+                    <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+        <%        }else{                                                            %>
+                    <a href="/like/<%=posts[i]._id%>" style="text-decoration: none;">
+                      <i class="bi bi-hand-thumbs-up thumbup"></i>
+                    </a>
+                    <h1 class="cardLike"><%=posts[i].likeCount%></h1>
+        <%        }                                                                 %>
+
+        
                 <div class="dropdown">
                   <i class="bi bi-chat thumbup" data-bs-toggle="dropdown"></i>
                     <div class="dropdown-menu" style="width: 400px !important;">
@@ -56,29 +54,38 @@
                           <button type="submit" class="btn searchButton btn-outline-info composebtn commentBtn">Add</button>
                         </form>
                         <!-- print 2-3 top comments -->
-                         <ul class="dropdown-item">
-    
+                          <ul class="dropdown-item">
+
                       <%    posts[i].comments.slice().reverse().forEach(function(data,index){ %>
-    
+
                       <%        if(index > 1) return;  %>
-    
-                      <%        if(data.comment.length > 40){  %>
-                                  <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
-                                    <a href="posts/<%= posts[i]._id %>" style="color:orange">Read</a>
-                                  </li>
-                       <%       }else{   %>
-                                  <li class="dropdown-item"><%=data.comment%></li>
-                       <%       }   %>
-                       
-                       <%   });  %>
-    
-                         <a href="posts/<%= posts[i]._id %>" class="dropdown-item" style="text-decoration: underline;color: orange;">View All</a>
+
+                                <div class="card" style="margin-bottom: 10px;">
+                                  <div class="card-body">
+
+                                    <p style="margin-bottom:0;"><i class="bi bi-person"></i><%=data.name%></p>
+                                    <%        if(data.comment.length > 40){  %>
+                                                <li class="dropdown-item"><%=data.comment.substring(0,40)+"..."%>
+                                                  <a href="posts/<%= posts[i]._id %>" style="color:orange">Read</a>
+                                                </li>
+                                    <%       }else{   %>
+                                                <li class="dropdown-item"><%=data.comment%></li>
+                                    <%       }   %>
+
+                                  </div>
+                                </div>
+                        <%   });  %>
+
+                          <a href="posts/<%= posts[i]._id %>" class="dropdown-item" style="text-decoration: underline;color: orange;">View All</a>
                           </ul>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
-        </div>
-  <% } %>
 
+            
+      <% } %>
+    </div>
+  
 <%- include("partials/footer"); -%>
