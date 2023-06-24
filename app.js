@@ -39,7 +39,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(""+process.env.mongoUrl);
+mongoose.connect("mongodb+srv://"+process.env.mongoUrl);
 
 // mongoose.connect("mongodb://0.0.0.0:27017/userDB");
 
