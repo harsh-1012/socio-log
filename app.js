@@ -27,7 +27,9 @@ app.use(fileUpload({
     limits: {
         fileSize: 10000000, // Around 10MB
     },
-    abortOnLimit: true,
+    tempFileDir: "tmp",
+    useTempFiles: true,
+    abortOnLimit: true
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
@@ -259,8 +261,8 @@ app.post("/compose",function(req,res){
         if (!image) return res.sendStatus(400);
         // if (/^image/.test(image.jpg)) console.log("error");
         //moving image to images folder
-        image.mv(__dirname + "/public/images/" + image.name);
-        cloudinary.uploader.upload(__dirname+"/public/images/"+image.name,function(err,result){
+        image.mv(__dirname + "/tmp/" + image.name);
+        cloudinary.uploader.upload(__dirname+"/tmp/"+image.name,function(err,result){
             if(err) console.log(err);
             else{
                 const userID = req.user._id;
