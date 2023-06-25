@@ -168,11 +168,6 @@ app.get("/delete/:deleteID",function(req,res){
     if(req.isAuthenticated()){
         Blog.findOneAndDelete({_id:reqDeleteID})
         .then(function(blog){
-            const pathtofile = __dirname+"/public/images/"+blog.imageName;
-            fs.unlink(pathtofile,function(err){
-                if(err) console.log(err);
-                else console.log("successfully deleted");
-            })
             cloudinary.uploader.destroy(blog.cloudinary_id,function(err,result){
                 if(err) console.log(err);
                 else console.log(result);
@@ -323,11 +318,6 @@ app.get("/posts/BeforeAuth/:postID",function(req,res){
 });
 
 app.post("/search",function(req,res){
-    //take input entered by user in search input 
-    //perform text search functionality
-    //will have array of it
-    //render home ejs file by passing array to it
-
     if(req.isAuthenticated()){
         const searchInput = req.body.searchinput;
         Blog.find({$text:{$search: searchInput}},{score:{ $meta: "textScore" }}).sort( { score: { $meta: "textScore" } } )
