@@ -2,14 +2,13 @@
 
 <!-- <h1>Hello</h1>
 <p> homeContent</p> -->
-
 <%for(let i=posts.length-1;i >= 0 ; i--){ %>
 
 
     <div class="card cardHome">
         <div class="row">
           <div class="col-lg-4">
-            <img src="/images/<%=posts[i].imageName%>" class="img-fluid card-img-top" alt="...">
+            <img src="http://res.cloudinary.com/dpuzwl8pf/image/upload/v1687703081/<%=posts[i].cloudinary_id%>.jpg" class="img-fluid card-img-top" alt="...">
           </div>
           <div class="col-lg-8">
             <div class="card-body">
