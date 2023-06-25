@@ -5,9 +5,9 @@
       <div class="row">
         <%for(let i=posts.length-1;i >= 0 ; i--){ %>
 
-            <div class="col col-md-6 col-lg-4 col-sm-12 col-12">
+            <div class="col col-md-6 col-lg-6 col-sm-12 col-12">
               <div class="card profilecard">
-                <img width="150" height="300" src="/images/<%=posts[i].imageName%>" class="card-img-top" alt="...">
+                <img width="150" height="300" src="http://res.cloudinary.com/dpuzwl8pf/image/upload/v1687703081/<%=posts[i].cloudinary_id%>.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                     
                   <!-- if current user matches with the user id stored with blog means display del -->

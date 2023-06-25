@@ -14,6 +14,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const { log } = require("console");
 const { isErrored } = require("stream");
+const cloudinary = require("cloudinary").v2;
 
 //const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -39,6 +40,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_NAME,
+    api_key:process.env.API_KEY,
+    api_secret:process.env.API_SECRET
+});
+
 //mongoose.connect("mongodb+srv://admin-harsh:"+ process.env.mongoPass +"@cluster0.xoqf80d.mongodb.net/blogDB");
 
 mongoose.connect("mongodb://0.0.0.0:27017/userDB");
@@ -55,6 +62,7 @@ const blogSchema = new mongoose.Schema({
     title : String,
     content : String,
     imageName:String,
+    cloudinary_id : String,
     likeCount : Number,
     comments : [commentSchema]
 });
@@ -166,6 +174,10 @@ app.get("/delete/:deleteID",function(req,res){
                 if(err) console.log(err);
                 else console.log("successfully deleted");
             })
+            cloudinary.uploader.destroy(blog.cloudinary_id,function(err,result){
+                if(err) console.log(err);
+                else console.log(result);
+            });
         })
         .catch(function(err){
             console.log(err);
@@ -248,29 +260,33 @@ app.post("/login",function(req,res){
 
 app.post("/compose",function(req,res){
     const {image} = req.files;
-    
     if(req.isAuthenticated()){
         // If no image submitted, exit
         if (!image) return res.sendStatus(400);
         // if (/^image/.test(image.jpg)) console.log("error");
         //moving image to images folder
         image.mv(__dirname + "/public/images/" + image.name);
+        cloudinary.uploader.upload(__dirname+"/public/images/"+image.name,function(err,result){
+            if(err) console.log(err);
+            else{
+                const userID = req.user._id;
         
-        const userID = req.user._id;
-        
-        User.findById({_id:userID})
-            .then(function(data){
+                User.findById({_id:userID})
+                    .then(function(data){
 
-                const post = {title : req.body.postTitle , content : req.body.postBody};
-                const blog = new Blog({
-                    userid : userID,
-                    name : data.name,
-                    title : post.title,
-                    content : post.content,
-                    imageName : image.name
-                });
-                blog.save();
-            });
+                        const post = {title : req.body.postTitle , content : req.body.postBody};
+                        const blog = new Blog({
+                            userid : userID,
+                            name : data.name,
+                            cloudinary_id : result.public_id,
+                            title : post.title,
+                            content : post.content,
+                            imageName : image.name
+                        });
+                        blog.save();
+                    });
+            }
+        });
 
         res.redirect("/main");
     }else{
@@ -284,7 +300,7 @@ app.get("/posts/:postID",function(req,res){
     if(req.isAuthenticated()){
         Blog.findOne({_id:requestedID})
         .then(function(post){
-            res.render("post",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments,id:requestedID,userID:req.user._id});
+            res.render("post",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments,id:requestedID,userID:req.user._id,cloud_id:post.cloudinary_id});
         })
         .catch(function(err){
             console.log(err);
@@ -300,7 +316,7 @@ app.get("/posts/BeforeAuth/:postID",function(req,res){
 
     Blog.findOne({_id:requestedID})
         .then(function(post){
-            res.render("postBeforeAuth",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments})
+            res.render("postBeforeAuth",{postTitle : post.title , postBody : post.content , postImage : post.imageName , comments : post.comments,cloud_id:post.cloudinary_id});
         })
         .catch(function(err){
             console.log(err);
