@@ -33,6 +33,8 @@ app.use(fileUpload({
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+//unleaked
+app.set('trust proxy', 1);
 
 app.use(session({
     secret:""+process.env.sessionPass,
