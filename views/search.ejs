@@ -9,7 +9,7 @@
       <div class="col-lg-8">
         <div class="card-body">
           
-          <p style="margin-bottom:0;"><i class="bi bi-person"></i><%=posts[i].name%></p>
+          <p style="margin-bottom:0;white-space: pre-line;"><i class="bi bi-person"></i><%=posts[i].name%></p>
       <!-- if current user matches with the user id stored with blog means display del -->
   <%      if(String(userID) === posts[i].userid){   %>
              <h1><%= posts[i].title %> <a href="delete/<%= posts[i]._id %>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#dddddd;position: relative;top: 14px;"></i></a></h1>
@@ -19,11 +19,11 @@
 
           <hr>
           <% if(posts[i].content.length > 150){ %>
-            <p><%= posts[i].content.substring(0,150) + " ..."%>
+            <p style="white-space: pre-line;"><%= posts[i].content.substring(0,150) + " ..."%>
                 <a href="posts/<%= posts[i]._id %>" style="color: orange;">Read More</a>
             </p>
            <% }else{  %>
-              <p><%= posts[i].content %></p>
+              <p style="white-space: pre-line;"><%= posts[i].content %></p>
            <%  } %>
         </div>
 
