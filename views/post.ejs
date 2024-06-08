@@ -5,7 +5,7 @@
 </div>
 <div class="container">
     <h1><%= postTitle %></h1>
-    <p><%= postBody %></p>
+    <p style="white-space: pre-line;"><%= postBody %></p>
 </div>
 <hr>
 <div class="container"><h1>Comments</h1></div>
@@ -14,11 +14,11 @@
  <%   for(let i=comments.length-1;i>=0;i--){  %>
         <div class="card" style="margin-bottom:10px;">
             <div class="card-body">
-              <p style="margin-bottom:0;"><i class="bi bi-person"></i><%=comments[i].name%></p>
+              <p style="margin-bottom:0;white-space: pre-line;"><i class="bi bi-person"></i><%=comments[i].name%></p>
           <%      if(String(userID) === comments[i].userid){    %>
-                    <p><%=comments[i].comment%><a href="deleteComment/<%=id%>/<%=comments[i]._id%>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#fff;position: relative;bottom:8px;"></i></a></p>
+                    <p style="white-space: pre-line;"><%=comments[i].comment%><a href="deleteComment/<%=id%>/<%=comments[i]._id%>"><i class="bi bi-file-minus" style="float: right;font-size: 25px;color:#fff;position: relative;bottom:8px;"></i></a></p>
           <%      }else{      %>
-                    <p><%=comments[i].comment%></p>
+                    <p style="white-space: pre-line;"><%=comments[i].comment%></p>
           <%      }   %>
             </div>
         </div>
