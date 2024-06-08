@@ -150,5 +150,5 @@ ul{
     margin-right: 20px;
 }
 p{
-        white-space: pre-line !important;
+        white-space: break-spaces !important;
 }
