@@ -23,6 +23,7 @@ const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pelle
 const app = express();
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(fileUpload({
     limits: {
         fileSize: 10000000, // Around 10MB
@@ -32,7 +33,8 @@ app.use(fileUpload({
     abortOnLimit: true
 }));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 //unleaked
 app.set('trust proxy', 1);
 
