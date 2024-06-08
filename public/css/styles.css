@@ -149,6 +149,6 @@ ul{
     font-size: 40px;
     margin-right: 20px;
 }
-p{
-        white-space: break-spaces !important;
+#body p {
+    white-space: pre-line !important;
 }
