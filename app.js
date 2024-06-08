@@ -103,6 +103,10 @@ passport.deserializeUser(function(id,done){
         });
 });
 
+app.get("/googlecbb0d407f58d357e.html",function(req,res){
+    res.sendFile(path.join(__dirname, 'public', 'googlecbb0d407f58d357e.html'));
+});
+
 app.get("/",function(req,res){
     Blog.find({})
         .then(function(blogList){
