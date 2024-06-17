@@ -16,6 +16,8 @@ const { log } = require("console");
 const { isErrored } = require("stream");
 const cloudinary = require("cloudinary").v2;
 const path = require('path');
+const os = require('os');
+const { exec } = require('child_process');
 
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
 
@@ -23,11 +25,18 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+const tmpDir = path.join(__dirname, 'tmp');
+if (!fs.existsSync(tmpDir)){
+    fs.mkdirSync(tmpDir);
+    fs.chmodSync(tmpDir, '0777');
+}
+
 app.use(fileUpload({
     limits: {
         fileSize: 10000000, // Around 10MB
     },
-    tempFileDir: "tmp",
+    tempFileDir: os.tmpdir(),
     useTempFiles: true,
     abortOnLimit: true
 }));
@@ -99,6 +108,14 @@ passport.deserializeUser(function(id,done){
         .catch(function(err){
             done(err);
         });
+});
+
+exec('mount', (err, stdout, stderr) => {
+    if (err) {
+        console.error(`exec error: ${err}`);
+        return;
+    }
+    console.log(`Mount points:\n${stdout}`);
 });
 
 app.get("/googlecbb0d407f58d357e.html",function(req,res){
