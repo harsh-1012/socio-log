@@ -25,6 +25,7 @@
     "mongoose": "^7.2.0",
     "mongoose-findorcreate": "^4.0.0",
     "passport": "^0.6.0",
-    "passport-local-mongoose": "^8.0.0"
+    "passport-local-mongoose": "^8.0.0",
+    "streamifier": "^0.1.1"
   }
 }
