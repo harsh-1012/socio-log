@@ -18,6 +18,7 @@ const cloudinary = require("cloudinary").v2;
 const path = require('path');
 const os = require('os');
 const { exec } = require('child_process');
+const streamifier = require('streamifier');
 
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
 
@@ -278,7 +279,7 @@ app.post("/login",function(req,res){
     });
 });
 
-app.post("/compose",function(req,res){
+/*app.post("/compose",function(req,res){
     const {image} = req.files;
     if(req.isAuthenticated()){
         // If no image submitted, exit
@@ -310,6 +311,56 @@ app.post("/compose",function(req,res){
 
         res.redirect("/main");
     }else{
+        res.redirect("/login");
+    }
+});*/
+
+app.post("/compose", function(req, res) {
+    const { image } = req.files;
+    
+    if (req.isAuthenticated()) {
+        // If no image submitted, exit
+        if (!image) return res.sendStatus(400);
+        
+        // Convert the image buffer to a stream and upload directly to Cloudinary
+        const uploadStream = (buffer) => {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream((error, result) => {
+                    if (result) resolve(result);
+                    else reject(error);
+                });
+                streamifier.createReadStream(buffer).pipe(stream);
+            });
+        };
+
+        uploadStream(image.data)
+            .then(result => {
+                const userID = req.user._id;
+
+                User.findById({ _id: userID })
+                    .then(function(data) {
+                        const post = { title: req.body.postTitle, content: req.body.postBody };
+                        const blog = new Blog({
+                            userid: userID,
+                            name: data.name,
+                            cloudinary_id: result.public_id,
+                            title: post.title,
+                            content: post.content,
+                            imageName: image.name
+                        });
+                        return blog.save();
+                    })
+                    .then(() => res.redirect("/main"))
+                    .catch(err => {
+                        console.error(err);
+                        res.sendStatus(500);
+                    });
+            })
+            .catch(err => {
+                console.error(err);
+                res.sendStatus(500);
+            });
+    } else {
         res.redirect("/login");
     }
 });
